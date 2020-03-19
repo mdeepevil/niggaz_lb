@@ -1,0 +1,13 @@
+[loadbalancer]
+192.168.56.10 ansible_user=vagrant ansible_ssh_pass=vagrant
+
+[webservers]
+192.168.56.11 ansible_user=vagrant ansible_ssh_pass=vagrant
+192.168.56.12 ansible_user=vagrant ansible_ssh_pass=vagrant
+
+[insecuressh:children]
+loadbalancer
+webservers
+
+[insecuressh:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'

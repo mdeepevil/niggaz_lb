@@ -1,0 +1,39 @@
+- hosts: all
+  remote_user: root
+  gather_facts: no
+  vars:
+    username: Eduard
+
+  tasks:
+
+  - name: ensure nginx is at the latest version
+    apt:
+      name: nginx
+      state: present
+
+  - name: start nginx
+    service:
+      name: nginx
+      state: started
+      enabled: yes
+
+
+  - name: Creates directory
+    file:
+      path: /src/www
+      state: directory
+
+  - name: Template a file to /etc/files.conf
+    template:
+      src: index.j2
+      dest: /src/www/index.html
+
+
+  - name: Replace after the expression till the end of the file (requires Ansible >= 2.4)
+    replace:
+      path: /etc/nginx/sites-enabled/default
+      regexp: 'root \/var\/www\/html.*'
+      replace: 'root /src/www;'
+
+  - name: nginx restarted
+    command: service nginx restart

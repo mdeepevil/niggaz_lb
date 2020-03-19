@@ -1,0 +1,16 @@
+---
+- hosts: loadbalancer
+  become: yes
+  become_method: sudo
+  vars_files:
+    - vars/all.yml
+  roles:
+    - nginx_proxy
+
+- hosts: webservers
+  become: yes
+  become_method: sudo
+  vars_files:
+    - vars/all.yml
+  roles:
+    - nginx
